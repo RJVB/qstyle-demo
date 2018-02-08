@@ -61,7 +61,7 @@ set(qstyle_demo_FORMS
 
 qt5_wrap_ui(qstyle_demo_ui ${qstyle_demo_FORMS})
 
-add_executable(qstyle-demo
+add_executable(qstyle-demo WIN32 MACOSX_BUNDLE
   ${qstyle_demo_ui}
   ${qstyle_demo_SOURCES}
 )
@@ -69,6 +69,14 @@ add_executable(qstyle-demo
 target_link_libraries(qstyle-demo Qt5::Core Qt5::Gui Qt5::Widgets)
 
 ########### install files ###############
-install(TARGETS qstyle-demo DESTINATION bin)
+if(APPLE)
+    if(NOT BUNDLE_INSTALL_DIR)
+        set(BUNDLE_INSTALL_DIR "/Applications")
+    endif()
+
+    install(TARGETS qstyle-demo DESTINATION ${BUNDLE_INSTALL_DIR})
+elseif(NOT WIN32)
+    install(TARGETS qstyle-demo DESTINATION bin)
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
