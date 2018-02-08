@@ -30,6 +30,7 @@
 #include <QMenuBar>
 #include <QMenu>
 #include <QIcon>
+#include <QGuiApplication>
 
 namespace Oxygen
 {
@@ -40,6 +41,8 @@ namespace Oxygen
     {
         setLayout( new QVBoxLayout() );
         QMenuBar* menuBar = new QMenuBar( this );
+        // let the menubar appear in the MDI window on all platforms
+        menuBar->setNativeMenuBar( false );
         layout()->addWidget( menuBar );
 
         QWidget* widget = new QWidget( this );
@@ -47,12 +50,28 @@ namespace Oxygen
         ui.setupUi( widget );
 
         QMenu* menu = menuBar->addMenu( tr( "Layout" ) );
-        connect( menu->addAction( tr( "Tile" ) ), SIGNAL(triggered()), this, SLOT(setLayoutTiled()) );
-        connect( menu->addAction( tr( "Cascade" ) ), SIGNAL(triggered()), this, SLOT(setLayoutCascade()) );
-        connect( menu->addAction( tr( "Tabs" ) ), SIGNAL(triggered()), this, SLOT(setLayoutTabbed()) );
+        QAction *action;
+        menu->addSection( tr( "Exclusive actions" ) );
+        QActionGroup *aGroup = new QActionGroup( menu );
+        action = menu->addAction( tr( "Tile" ) );
+        action->setCheckable( true );
+        aGroup->addAction( action );
+        connect( action, SIGNAL(triggered()), this, SLOT(setLayoutTiled()) );
+        action = menu->addAction( tr( "Cascade" ) );
+        action->setCheckable( true );
+        aGroup->addAction( action );
+        connect( action, SIGNAL(triggered()), this, SLOT(setLayoutCascade()) );
+        action = menu->addAction( tr( "Tabs" ) );
+        action->setCheckable( true );
+        aGroup->addAction( action );
+        connect( action, SIGNAL(triggered()), this, SLOT(setLayoutTabbed()) );
+
+        menu->addSeparator();
+
+        action = menu->addAction( tr( "<- Check here" ) );
+        action->setCheckable( true );
 
         menu = menuBar->addMenu( tr( "Tools" ) );
-        QAction* action;
         connect( action = menu->addAction( QIcon::fromTheme( QStringLiteral( "arrow-right" ) ), tr( "Select Next Window" ) ), SIGNAL(triggered()), ui.mdiArea, SLOT(activateNextSubWindow()) );
         action->setShortcut( Qt::CTRL + Qt::Key_Tab );
         addAction( action );
@@ -61,6 +80,46 @@ namespace Oxygen
         action->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_Tab );
         addAction( action );
 
+#ifdef Q_OS_MACOS
+        // duplicate the MDI menubar in the native menubar
+        if (QGuiApplication::platformName().contains(QLatin1String("cocoa")))
+        {
+            QMenuBar* menuBar = new QMenuBar( 0 );
+            // make a global menubar
+            menuBar->setNativeMenuBar( true );
+
+            QMenu* menu = menuBar->addMenu( tr( "Layout" ) );
+            QAction *action;
+            menu->addSection( tr( "Exclusive actions" ) );
+            QActionGroup *aGroup = new QActionGroup( menu );
+            action = menu->addAction( tr( "Tile" ) );
+            action->setCheckable( true );
+            aGroup->addAction( action );
+            connect( action, SIGNAL(triggered()), this, SLOT(setLayoutTiled()) );
+            action = menu->addAction( tr( "Cascade" ) );
+            action->setCheckable( true );
+            aGroup->addAction( action );
+            connect( action, SIGNAL(triggered()), this, SLOT(setLayoutCascade()) );
+            action = menu->addAction( tr( "Tabs" ) );
+            action->setCheckable( true );
+            aGroup->addAction( action );
+            connect( action, SIGNAL(triggered()), this, SLOT(setLayoutTabbed()) );
+
+            menu->addSeparator();
+
+            action = menu->addAction( tr( "<- Check here" ) );
+            action->setCheckable( true );
+
+            menu = menuBar->addMenu( tr( "Tools" ) );
+            connect( action = menu->addAction( QIcon::fromTheme( QStringLiteral( "arrow-right" ) ), tr( "Select Next Window" ) ), SIGNAL(triggered()), ui.mdiArea, SLOT(activateNextSubWindow()) );
+            action->setShortcut( Qt::CTRL + Qt::Key_Tab );
+            addAction( action );
+
+            connect( action = menu->addAction( QIcon::fromTheme( QStringLiteral( "arrow-left" ) ), tr( "Select Previous Window" ) ), SIGNAL(triggered()), ui.mdiArea, SLOT(activatePreviousSubWindow()) );
+            action->setShortcut( Qt::CTRL + Qt::SHIFT + Qt::Key_Tab );
+            addAction( action );
+        }
+#endif //Q_OS_MACOS
     }
 
     //______________________________________________________________

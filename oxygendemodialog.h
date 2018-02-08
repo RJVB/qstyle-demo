@@ -75,6 +75,7 @@ namespace Oxygen
 
         //! toggle RightToLeft
         virtual void toggleRightToLeft( bool );
+        virtual void layoutDirectionChanged( Qt::LayoutDirection );
 
         protected:
 

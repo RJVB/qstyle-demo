@@ -41,7 +41,7 @@
  * A title text with a right-aligned pixmap:
  * @code
 KTitleWidget *titleWidget = new KTitleWidget(this);
-titleWidget->setText(i18n("Title"));
+titleWidget->setText(tr("Title"));
 titleWidget->setPixmap(QIcon::fromTheme("screen").pixmap(22, 22));
  * @endcode
  *

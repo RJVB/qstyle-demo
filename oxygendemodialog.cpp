@@ -51,6 +51,7 @@ namespace Oxygen
     {
 
         setWindowTitle( tr( "Oxygen Demo" ) );
+        setWindowFlag( Qt::Dialog, false );
 
         // ui
         setupUi(this);
@@ -67,7 +68,9 @@ namespace Oxygen
         buttonBox->addButton( _enableCheckBox, QDialogButtonBox::ResetRole );
 
         _rightToLeftCheckBox = new QCheckBox( tr( "Right to left layout" ) );
+        _rightToLeftCheckBox->setChecked( qApp->isRightToLeft() );
         connect( _rightToLeftCheckBox, SIGNAL(toggled(bool)), SLOT(toggleRightToLeft(bool)) );
+        connect( qApp, SIGNAL(layoutDirectionChanged(Qt::LayoutDirection)), SLOT(layoutDirectionChanged(Qt::LayoutDirection)) );
         buttonBox->addButton( _rightToLeftCheckBox, QDialogButtonBox::ResetRole );
 
         WidgetStyleChooser *styleChooser = new WidgetStyleChooser(this);
@@ -134,7 +137,7 @@ namespace Oxygen
         // mdi
         {
             page = new KPageWidgetItem( widget = new MdiDemoWidget() );
-            page->setName( tr( "MDI Windows" ) );
+            page->setName( tr( "MDI Windows & Menus" ) );
             setPageIcon( page, QStringLiteral( "preferences-system-windows" ) );
             page->setHeader( tr( "Shows the appearance of MDI windows" ) );
             pageWidget->addPage( page );
@@ -212,6 +215,10 @@ namespace Oxygen
     //_______________________________________________________________
     void DemoDialog::toggleRightToLeft( bool value )
     { qApp->setLayoutDirection( value ? Qt::RightToLeft:Qt::LeftToRight ); }
+
+    //_______________________________________________________________
+    void DemoDialog::layoutDirectionChanged( Qt::LayoutDirection direction )
+    { _rightToLeftCheckBox->setChecked( direction == Qt::RightToLeft ); }
 
     //_______________________________________________________________
     void DemoDialog::closeEvent( QCloseEvent* event )

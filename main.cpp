@@ -28,10 +28,8 @@
 
 #include <QApplication>
 
-#if QT_VERSION >= 0x050200
 #include <QCommandLineOption>
 #include <QCommandLineParser>
-#endif
 
 #include <QIcon>
 
@@ -42,14 +40,13 @@ namespace Oxygen
     {
         QApplication app( argc, argv );
 
-        #if QT_VERSION >= 0x050200
         QCommandLineParser commandLine;
         QCommandLineOption enableHighDpi( "highdpi", "Enable High DPI pixmaps" );
         commandLine.addOption( enableHighDpi );
+        commandLine.addHelpOption();
         commandLine.process( app );
 
         app.setAttribute( Qt::AA_UseHighDpiPixmaps, commandLine.isSet( enableHighDpi ) );
-        #endif
 
         app.setApplicationName( app.tr( "QStyle Demo" ) );
         app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "oxygen" ), app.windowIcon() ) );

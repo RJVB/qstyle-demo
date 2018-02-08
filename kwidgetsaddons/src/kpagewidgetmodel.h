@@ -37,8 +37,8 @@ class QWidget;
  * \code
  *  ColorPage *page = new ColorPage;
  *
- *  KPageWidgetItem *item = new KPageWidgetItem( page, i18n( "Colors" ) );
- *  item->setHeader( i18n( "Colors of Main Window" ) );
+ *  KPageWidgetItem *item = new KPageWidgetItem( page, tr( "Colors" ) );
+ *  item->setHeader( tr( "Colors of Main Window" ) );
  *  item->setIcon( QIcon::fromTheme( "colors" ) );
  *
  *  KPageWidget *pageWidget = new KPageWidget( this );
