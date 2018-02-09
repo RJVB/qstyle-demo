@@ -60,9 +60,11 @@ set(qstyle_demo_FORMS
 )
 
 qt5_wrap_ui(qstyle_demo_ui ${qstyle_demo_FORMS})
+qt5_add_resources(qstyle_demo_res resources.qrc)
 
 add_executable(qstyle-demo WIN32 MACOSX_BUNDLE
   ${qstyle_demo_ui}
+  ${qstyle_demo_res}
   ${qstyle_demo_SOURCES}
 )
 

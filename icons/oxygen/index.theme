@@ -1,0 +1,29 @@
+[Icon Theme]
+Name=Oxygen
+Comment=A stripped-down embedded, scalable version of the theme maintained by the Oxygen Team
+# this custom version inherits the Tango theme
+Inherits=Tango
+DisplayDepth=32
+FollowsColorScheme=true
+
+DesktopDefault=48
+DesktopSizes=16,22,32,48,64,128,256
+ToolbarDefault=22
+ToolbarSizes=16,22,32,48
+MainToolbarDefault=22
+MainToolbarSizes=16,22,32,48
+SmallDefault=16
+SmallSizes=16,22,32,48
+PanelDefault=48
+PanelSizes=16,22,32,48,64,128,256
+DialogDefault=32
+DialogSizes=16,22,32,48,64,128,256
+
+KDE-Extensions=.svg
+
+Directories=scalable
+
+[scalable]
+Size=48
+Type=Scalable
+

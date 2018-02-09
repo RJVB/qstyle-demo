@@ -32,6 +32,7 @@
 #include <QCommandLineParser>
 
 #include <QIcon>
+#include <QDebug>
 
 namespace Oxygen
 {
@@ -47,6 +48,15 @@ namespace Oxygen
         commandLine.process( app );
 
         app.setAttribute( Qt::AA_UseHighDpiPixmaps, commandLine.isSet( enableHighDpi ) );
+
+        if ( QIcon::themeName().isEmpty()
+            || QIcon::themeName() == QStringLiteral("hicolor")
+            || QIcon::themeSearchPaths().at(0) == QStringLiteral(":/icons") ) {
+            // No icon theme name is set, or we only search the embedded resource for it;
+            // we'll get our icons from the embedded Oxygen icon theme copy.
+            QIcon::setThemeName( QStringLiteral( "oxygen" ) );
+            qInfo() << "Icon theme now" << QIcon::themeName() << "from search path" << QIcon::themeSearchPaths();
+        }
 
         app.setApplicationName( app.tr( "QStyle Demo" ) );
         app.setWindowIcon( QIcon::fromTheme( QStringLiteral( "oxygen" ), app.windowIcon() ) );

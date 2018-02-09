@@ -1,0 +1,8 @@
+<RCC>
+<qresource>
+	<file>icons/oxygen/index.theme</file>
+	<file>icons/oxygen/scalable</file>
+	<file>icons/Tango/index.theme</file>
+	<file>icons/Tango/scalable</file>
+</qresource>
+</RCC>
