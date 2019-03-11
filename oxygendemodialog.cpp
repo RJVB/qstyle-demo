@@ -77,6 +77,9 @@ namespace Oxygen
         styleChooser->createStyleSelectionMenu( tr( "Style" ) );
         buttonBox->addButton( styleChooser, QDialogButtonBox::ResetRole );
 
+        connect( buttonBox->addButton( tr("About Qt"), QDialogButtonBox::HelpRole),
+                 &QPushButton::clicked, qApp, &QApplication::aboutQt );
+
         // connections
         connect( pageWidget, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)), SLOT(updateWindowTitle(KPageWidgetItem*)) );
         connect( pageWidget, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)), SLOT(updateEnableState(KPageWidgetItem*)) );
