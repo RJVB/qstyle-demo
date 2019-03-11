@@ -3,6 +3,15 @@ project(qstyle-demo VERSION 5.12.0)
 
 set(QT_MIN_VERSION "5.2.0")
 
+find_package(ECM 5.42.0  NO_MODULE)
+if (ECM_FOUND)
+    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_SOURCE_DIR}/cmake)
+
+    include(KDEInstallDirs)
+    include(KDECMakeSettings)
+    include(KDECompilerSettings NO_POLICY_SCOPE)
+endif()
+
 include(FeatureSummary)
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
