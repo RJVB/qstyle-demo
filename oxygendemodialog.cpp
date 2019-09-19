@@ -240,7 +240,7 @@ namespace Oxygen
     //_______________________________________________________________
     void DemoDialog::setPageIcon( KPageWidgetItem* page, const QString& iconName ) const
     {
-        #if OXYGEN_USE_KDE4
+        #ifdef OXYGEN_USE_KDE4
         page->setIcon( KIcon( iconName ) );
         #else
         page->setIcon( QIcon::fromTheme( iconName ) );

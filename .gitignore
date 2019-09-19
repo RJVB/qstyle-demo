@@ -3,4 +3,4 @@
 *.kdev4
 *.rej
 *.orig
-build
+build*
