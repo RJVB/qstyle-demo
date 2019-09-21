@@ -51,7 +51,11 @@ namespace Oxygen
     {
 
         setWindowTitle( tr( "Oxygen Demo" ) );
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
         setWindowFlag( Qt::Dialog, false );
+#else
+        setWindowFlags( windowFlags() & ~Qt::Dialog );
+#endif
 
         // ui
         setupUi(this);
