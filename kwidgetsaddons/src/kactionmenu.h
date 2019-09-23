@@ -58,7 +58,7 @@ public:
     explicit KActionMenu(QObject *parent);
     KActionMenu(const QString &text, QObject *parent);
     KActionMenu(const QIcon &icon, const QString &text, QObject *parent);
-    virtual ~KActionMenu();
+    ~KActionMenu() override;
 
     /**
      * @deprecated
@@ -67,6 +67,10 @@ public:
     KWIDGETSADDONS_DEPRECATED void remove(QAction *);
 #endif
 
+    /**
+     * Adds @p action to this KActionMenu.
+     * The KActionMenu does not take ownership of @p action.
+     */
     void addAction(QAction *action);
     QAction *addSeparator();
     void insertAction(QAction *before, QAction *action);
@@ -122,7 +126,7 @@ public:
      */
     void setStickyMenu(bool sticky);
 
-    QWidget *createWidget(QWidget *parent) Q_DECL_OVERRIDE;
+    QWidget *createWidget(QWidget *parent) override;
 
 private:
     class KActionMenuPrivate *const d;

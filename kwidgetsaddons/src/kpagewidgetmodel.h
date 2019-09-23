@@ -61,7 +61,10 @@ class KWIDGETSADDONS_EXPORT KPageWidgetItem : public QObject
      * It dis-/enables both the widget and the item in the list-/treeview.
      */
     Q_PROPERTY(bool enabled READ isEnabled WRITE setEnabled)
-
+    /**
+     * @since 5.52
+     */
+    Q_PROPERTY(bool headerVisible READ isHeaderVisible WRITE setHeaderVisible)
 public:
     /**
      * Creates a new page widget item.
@@ -150,6 +153,18 @@ public:
      */
     bool isEnabled() const;
 
+    /**
+     * Returns whether the page will show the header title
+     * @since 5.52
+     */
+    bool isHeaderVisible() const;
+
+    /**
+     * Set whether the page should show the header title
+     * @since 5.52
+     */
+    void setHeaderVisible(bool visible);
+
 public Q_SLOTS:
     /**
      * Sets whether the page widget item is enabled.
@@ -203,7 +218,7 @@ public:
     /**
      * Destroys the page widget model.
      */
-    ~KPageWidgetModel();
+    ~KPageWidgetModel() override;
 
     /**
      * Adds a new top level page to the model.
@@ -272,13 +287,13 @@ public:
     /**
      * These methods are reimplemented from QAbstractItemModel.
      */
-    int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
-    Qt::ItemFlags flags(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex parent(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &index) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     /**
      * Returns the KPageWidgetItem for a given index or a null pointer if the index is invalid.

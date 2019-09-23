@@ -41,7 +41,24 @@ public:
 
     QString textStyleSheet() const
     {
-        const int fontSize = qRound(QApplication::font().pointSize() * 1.4);
+        qreal factor;
+        switch (level) {
+        case 1:
+            factor = 1.80;
+            break;
+        case 2:
+            factor = 1.30;
+            break;
+        case 3:
+            factor = 1.20;
+            break;
+        case 4:
+            factor = 1.10;
+            break;
+        default:
+            factor = 1;
+        }
+        const int fontSize = qRound(QApplication::font().pointSize() * factor);
         return QStringLiteral("QLabel { font-size: %1pt; color: %2 }").arg(QString::number(fontSize), q->palette().color(QPalette::WindowText).name());
     }
 
@@ -56,7 +73,7 @@ public:
         case InfoMessage:
         case WarningMessage:
         case ErrorMessage:
-            styleSheet = QStringLiteral("QLabel { color: palette(%1); background: palette(%2); }").arg(q->palette().color(QPalette::HighlightedText).name()).arg(q->palette().color(QPalette::Highlight).name());
+            styleSheet = QStringLiteral("QLabel { color: palette(%1); background: palette(%2); }").arg(q->palette().color(QPalette::HighlightedText).name(), q->palette().color(QPalette::Highlight).name());
             break;
         case PlainMessage:
         default:
@@ -65,6 +82,7 @@ public:
         return styleSheet;
     }
 
+    int level = 1;
     KTitleWidget *q;
     QGridLayout *headerLayout;
     QLabel *imageLabel;
@@ -91,13 +109,10 @@ QString KTitleWidget::Private::iconTypeToIconName(KTitleWidget::MessageType type
     switch (type) {
     case KTitleWidget::InfoMessage:
         return QStringLiteral("dialog-information");
-        break;
     case KTitleWidget::ErrorMessage:
         return QStringLiteral("dialog-error");
-        break;
     case KTitleWidget::WarningMessage:
         return QStringLiteral("dialog-warning");
-        break;
     case KTitleWidget::PlainMessage:
         break;
     }
@@ -114,11 +129,13 @@ KTitleWidget::KTitleWidget(QWidget *parent)
     titleFrame->setFrameShape(QFrame::StyledPanel);
     titleFrame->setFrameShadow(QFrame::Plain);
     titleFrame->setBackgroundRole(QPalette::Base);
+    titleFrame->setContentsMargins(0, 0, 0, 0);
 
     // default image / text part start
     d->headerLayout = new QGridLayout(titleFrame);
     d->headerLayout->setColumnStretch(0, 1);
     d->headerLayout->setMargin(6);
+    d->headerLayout->setContentsMargins(0, 0, 0, 0);
 
     d->textLabel = new QLabel(titleFrame);
     d->textLabel->setVisible(false);
@@ -141,7 +158,7 @@ KTitleWidget::KTitleWidget(QWidget *parent)
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->addWidget(titleFrame);
-    mainLayout->setMargin(0);
+    mainLayout->setContentsMargins(0, 0, 0, 0);
     setLayout(mainLayout);
 }
 
@@ -211,6 +228,22 @@ void KTitleWidget::setText(const QString &text, Qt::Alignment alignment)
     d->textLabel->setText(text);
     d->textLabel->setAlignment(alignment);
     show();
+}
+
+void KTitleWidget::setLevel(int level)
+{
+    if (d->level == level) {
+        return;
+    }
+
+    d->level = level;
+
+    d->textLabel->setStyleSheet(d->textStyleSheet());
+}
+
+int KTitleWidget::level()
+{
+    return d->level;
 }
 
 void KTitleWidget::setText(const QString &text, MessageType type)

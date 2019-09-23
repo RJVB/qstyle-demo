@@ -36,8 +36,9 @@
 
 class KPageStackedWidget : public QStackedWidget
 {
+    Q_OBJECT
 public:
-    KPageStackedWidget(QWidget *parent = nullptr)
+    explicit KPageStackedWidget(QWidget *parent = nullptr)
         : QStackedWidget(parent)
     {
     }
@@ -47,7 +48,7 @@ public:
         mMinimumSize = size;
     }
 
-    QSize minimumSizeHint() const Q_DECL_OVERRIDE
+    QSize minimumSizeHint() const override
     {
         return mMinimumSize.expandedTo(QStackedWidget::minimumSizeHint());
     }
@@ -101,20 +102,21 @@ class KPageListViewProxy;
 
 class KPagePlainView : public QAbstractItemView
 {
+    Q_OBJECT
 public:
-    KPagePlainView(QWidget *parent = nullptr);
+    explicit KPagePlainView(QWidget *parent = nullptr);
 
-    QModelIndex indexAt(const QPoint &point) const Q_DECL_OVERRIDE;
-    void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) Q_DECL_OVERRIDE;
-    QRect visualRect(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QModelIndex indexAt(const QPoint &point) const override;
+    void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) override;
+    QRect visualRect(const QModelIndex &index) const override;
 
 protected:
-    QModelIndex moveCursor(QAbstractItemView::CursorAction, Qt::KeyboardModifiers) Q_DECL_OVERRIDE;
-    int horizontalOffset() const Q_DECL_OVERRIDE;
-    int verticalOffset() const Q_DECL_OVERRIDE;
-    bool isIndexHidden(const QModelIndex &) const Q_DECL_OVERRIDE;
-    void setSelection(const QRect &, QFlags<QItemSelectionModel::SelectionFlag>) Q_DECL_OVERRIDE;
-    QRegion visualRegionForSelection(const QItemSelection &) const Q_DECL_OVERRIDE;
+    QModelIndex moveCursor(QAbstractItemView::CursorAction, Qt::KeyboardModifiers) override;
+    int horizontalOffset() const override;
+    int verticalOffset() const override;
+    bool isIndexHidden(const QModelIndex &) const override;
+    void setSelection(const QRect &, QFlags<QItemSelectionModel::SelectionFlag>) override;
+    QRegion visualRegionForSelection(const QItemSelection &) const override;
 };
 
 class KPageListView : public QListView
@@ -122,13 +124,13 @@ class KPageListView : public QListView
     Q_OBJECT
 
 public:
-    KPageListView(QWidget *parent = nullptr);
-    virtual ~KPageListView();
+    explicit KPageListView(QWidget *parent = nullptr);
+    ~KPageListView() override;
 
-    void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
+    void setModel(QAbstractItemModel *model) override;
 
 protected:
-    void changeEvent(QEvent *event) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *event) override;
 
 private Q_SLOTS:
     void updateWidth();
@@ -139,9 +141,9 @@ class KPageTreeView : public QTreeView
     Q_OBJECT
 
 public:
-    KPageTreeView(QWidget *parent = nullptr);
+    explicit KPageTreeView(QWidget *parent = nullptr);
 
-    void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
+    void setModel(QAbstractItemModel *model) override;
 
 private Q_SLOTS:
     void updateWidth();
@@ -155,29 +157,29 @@ class KPageTabbedView : public QAbstractItemView
     Q_OBJECT
 
 public:
-    KPageTabbedView(QWidget *parent = nullptr);
-    virtual ~KPageTabbedView();
+    explicit KPageTabbedView(QWidget *parent = nullptr);
+    ~KPageTabbedView() override;
 
-    void setModel(QAbstractItemModel *model) Q_DECL_OVERRIDE;
+    void setModel(QAbstractItemModel *model) override;
 
-    QModelIndex indexAt(const QPoint &point) const Q_DECL_OVERRIDE;
-    void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) Q_DECL_OVERRIDE;
-    QRect visualRect(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    QModelIndex indexAt(const QPoint &point) const override;
+    void scrollTo(const QModelIndex &index, ScrollHint hint = EnsureVisible) override;
+    QRect visualRect(const QModelIndex &index) const override;
 
-    QSize minimumSizeHint() const Q_DECL_OVERRIDE;
+    QSize minimumSizeHint() const override;
 
 protected:
-    QModelIndex moveCursor(QAbstractItemView::CursorAction, Qt::KeyboardModifiers) Q_DECL_OVERRIDE;
-    int horizontalOffset() const Q_DECL_OVERRIDE;
-    int verticalOffset() const Q_DECL_OVERRIDE;
-    bool isIndexHidden(const QModelIndex &) const Q_DECL_OVERRIDE;
-    void setSelection(const QRect &, QFlags<QItemSelectionModel::SelectionFlag>) Q_DECL_OVERRIDE;
-    QRegion visualRegionForSelection(const QItemSelection &) const Q_DECL_OVERRIDE;
+    QModelIndex moveCursor(QAbstractItemView::CursorAction, Qt::KeyboardModifiers) override;
+    int horizontalOffset() const override;
+    int verticalOffset() const override;
+    bool isIndexHidden(const QModelIndex &) const override;
+    void setSelection(const QRect &, QFlags<QItemSelectionModel::SelectionFlag>) override;
+    QRegion visualRegionForSelection(const QItemSelection &) const override;
 
 private Q_SLOTS:
     void currentPageChanged(int);
     void layoutChanged();
-    void dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &roles) Q_DECL_OVERRIDE;
+    void dataChanged(const QModelIndex &, const QModelIndex &, const QVector<int> &roles) override;
 
 private:
     QTabWidget *mTabWidget;
@@ -188,10 +190,10 @@ class KPageListViewDelegate : public QAbstractItemDelegate
     Q_OBJECT
 
 public:
-    KPageListViewDelegate(QObject *parent = nullptr);
+    explicit KPageListViewDelegate(QObject *parent = nullptr);
 
-    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
-    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 
 private:
     void drawFocus(QPainter *, const QStyleOptionViewItem &, const QRect &) const;
@@ -206,16 +208,16 @@ class KPageListViewProxy : public QAbstractProxyModel
     Q_OBJECT
 
 public:
-    KPageListViewProxy(QObject *parent = nullptr);
-    virtual ~KPageListViewProxy();
+    explicit KPageListViewProxy(QObject *parent = nullptr);
+    ~KPageListViewProxy() override;
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
-    QModelIndex parent(const QModelIndex &) const Q_DECL_OVERRIDE;
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    QModelIndex mapFromSource(const QModelIndex &index) const Q_DECL_OVERRIDE;
-    QModelIndex mapToSource(const QModelIndex &index) const Q_DECL_OVERRIDE;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex parent(const QModelIndex &) const override;
+    QVariant data(const QModelIndex &index, int role) const override;
+    QModelIndex mapFromSource(const QModelIndex &index) const override;
+    QModelIndex mapToSource(const QModelIndex &index) const override;
 
 public Q_SLOTS:
     void rebuildMap();
@@ -234,9 +236,9 @@ public:
     SelectionModel(QAbstractItemModel *model, QObject *parent);
 
 public Q_SLOTS:
-    void clear() Q_DECL_OVERRIDE;
-    void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
-    void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) Q_DECL_OVERRIDE;
+    void clear() override;
+    void select(const QModelIndex &index, QItemSelectionModel::SelectionFlags command) override;
+    void select(const QItemSelection &selection, QItemSelectionModel::SelectionFlags command) override;
 };
 
 }

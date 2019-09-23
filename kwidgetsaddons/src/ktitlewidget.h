@@ -51,7 +51,7 @@ KTitleWidget *checkboxTitleWidget = new KTitleWidget(this);
 
 QWidget *checkBoxTitleMainWidget = new QWidget(this);
 QVBoxLayout *titleLayout = new QVBoxLayout(checkBoxTitleMainWidget);
-titleLayout->setMargin(6);
+titleLayout->setContentsMargins(6, 6, 6, 6);
 
 QCheckBox *checkBox = new QCheckBox("Text Checkbox", checkBoxTitleMainWidget);
 titleLayout->addWidget(checkBox);
@@ -99,7 +99,7 @@ public:
      */
     explicit KTitleWidget(QWidget *parent = nullptr);
 
-    virtual ~KTitleWidget();
+    ~KTitleWidget() override;
 
     /**
      * @param widget Widget displayed on the title widget.
@@ -138,6 +138,14 @@ public:
      * @return timeout value in msecs
      */
     int autoHideTimeout() const;
+
+    /**
+     * @return The level of this title: it influences the font size following the guidelines at
+     *         https://www.my-scratch.de/HIG/style/typography.html
+     *         It also corresponds to the level api of Kirigami Heading for QML applications
+     * @since 5.53
+     */
+    int level();
 
 public Q_SLOTS:
     /**
@@ -198,10 +206,18 @@ public Q_SLOTS:
      */
     void setAutoHideTimeout(int msecs);
 
+    /**
+     * Sets the level of this title, similar to HTML's h1 h2 h3...
+     * follows KDE HIG https://www.my-scratch.de/HIG/style/typography.html
+     * @param level the level of the title, 1 is the biggest font and most important, descending
+     * @since 5.53
+     */
+    void setLevel(int level);
+
 protected:
-    void changeEvent(QEvent *e) Q_DECL_OVERRIDE;
-    void showEvent(QShowEvent *event) Q_DECL_OVERRIDE;
-    bool eventFilter(QObject *object, QEvent *event) Q_DECL_OVERRIDE;
+    void changeEvent(QEvent *e) override;
+    void showEvent(QShowEvent *event) override;
+    bool eventFilter(QObject *object, QEvent *event) override;
 
 private:
     class Private;
