@@ -37,6 +37,8 @@
 
 namespace Oxygen
 {
+    class DemoDialog;
+
     class ButtonDemoWidget: public DemoWidget
     {
 
@@ -45,7 +47,7 @@ namespace Oxygen
         public:
 
         //! constructor
-        explicit ButtonDemoWidget( QWidget* = 0 );
+        explicit ButtonDemoWidget( QWidget* = 0, DemoDialog* dlg = 0 );
 
         //! destructor
         virtual ~ButtonDemoWidget( void )

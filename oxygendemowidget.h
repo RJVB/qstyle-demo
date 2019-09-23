@@ -34,6 +34,8 @@
 namespace Oxygen
 {
 
+    class DemoDialog;
+
     class DemoWidget: public QWidget
     {
 
@@ -41,10 +43,11 @@ namespace Oxygen
 
         public:
 
-        //! constructo
-        explicit DemoWidget( QWidget* parent ):
+        //! constructor
+        explicit DemoWidget( QWidget* parent, DemoDialog* dlg = nullptr ):
             QWidget( parent ),
-            _simulator( new Simulator( this ) )
+            _simulator( new Simulator( this ) ),
+            _dlg(dlg)
         {}
 
         //! destructor
@@ -55,10 +58,17 @@ namespace Oxygen
         Simulator& simulator( void ) const
         { return *_simulator; }
 
+        //! parent demo DemoDialog
+        DemoDialog* dialog()
+        {
+            return _dlg;
+        }
+
         private:
 
         //! simulator
         Simulator* _simulator;
+        DemoDialog* _dlg;
 
     };
 

@@ -25,13 +25,14 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "oxygeninputdemowidget.h"
+#include "oxygendemodialog.h"
 
 namespace Oxygen
 {
 
     //________________________________________________________________
-    InputDemoWidget::InputDemoWidget( QWidget* parent ):
-        DemoWidget( parent )
+    InputDemoWidget::InputDemoWidget( QWidget* parent, DemoDialog* dlg ):
+        DemoWidget( parent, dlg )
     {
 
         ui.setupUi( this );
@@ -100,8 +101,15 @@ namespace Oxygen
         {
 
             // toggle flat widgets
-            simulator().click( ui.flatCheckBox );
-            simulator().click( ui.flatCheckBox );
+            if (ui.flatCheckBox->isEnabled()) {
+                simulator().click( ui.flatCheckBox );
+                simulator().wait(2000);
+                simulator().click( ui.flatCheckBox );
+            } else if (dialog()) {
+                simulator().click( dialog()->_flatLook );
+                simulator().wait(2000);
+                simulator().click( dialog()->_flatLook );
+            }
 
         }
 

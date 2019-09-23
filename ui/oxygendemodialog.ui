@@ -25,20 +25,23 @@
      <property name="standardButtons">
       <set>QDialogButtonBox::Ok</set>
      </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
     </widget>
    </item>
   </layout>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>KPageView</class>
-   <extends>QWidget</extends>
-   <header>kpageview.h</header>
-  </customwidget>
-  <customwidget>
    <class>KPageWidget</class>
    <extends>KPageView</extends>
    <header>kpagewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>KPageView</class>
+   <extends>QWidget</extends>
+   <header>kpageview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

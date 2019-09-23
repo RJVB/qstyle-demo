@@ -77,6 +77,11 @@ namespace Oxygen
         connect( qApp, SIGNAL(layoutDirectionChanged(Qt::LayoutDirection)), SLOT(layoutDirectionChanged(Qt::LayoutDirection)) );
         buttonBox->addButton( _rightToLeftCheckBox, QDialogButtonBox::ResetRole );
 
+        _flatLook = new QCheckBox( tr( "Flat look" ) );
+        _flatLook->setChecked( false );
+        connect( _flatLook, SIGNAL(toggled(bool)), SLOT(toggleFlat(bool)) );
+        buttonBox->addButton( _flatLook, QDialogButtonBox::ResetRole );
+
         WidgetStyleChooser *styleChooser = new WidgetStyleChooser(this);
         styleChooser->createStyleSelectionMenu( tr( "Style" ) );
         buttonBox->addButton( styleChooser, QDialogButtonBox::ResetRole );
@@ -87,17 +92,22 @@ namespace Oxygen
         // connections
         connect( pageWidget, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)), SLOT(updateWindowTitle(KPageWidgetItem*)) );
         connect( pageWidget, SIGNAL(currentPageChanged(KPageWidgetItem*,KPageWidgetItem*)), SLOT(updateEnableState(KPageWidgetItem*)) );
-        KPageWidgetItem *page;
+        KPageWidgetItem *page, *first;
         DemoWidget *widget;
+
+        // Create and add pages, "displaying" them immediately to pre-render them
+        // (required to let the global "Flat look" feature work on pages the user
+        // didn't visit yet.
 
         // inputs
         {
-            page = new KPageWidgetItem( widget = new InputDemoWidget() );
+            first = page = new KPageWidgetItem( widget = new InputDemoWidget(nullptr, this) );
             page->setName( tr("Input Widgets") );
             setPageIcon( page, QStringLiteral( "edit-rename" ) );
             page->setHeader( tr("Shows the appearance of text input widgets") );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // tab
@@ -108,16 +118,18 @@ namespace Oxygen
             page->setHeader( tr("Shows the appearance of tab widgets") );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // buttons
         {
-            page = new KPageWidgetItem( widget = new ButtonDemoWidget() );
+            page = new KPageWidgetItem( widget = new ButtonDemoWidget(nullptr, this) );
             page->setName( tr("Buttons") );
             setPageIcon( page, QStringLiteral( "go-jump-locationbar" ) );
             page->setHeader( tr("Shows the appearance of buttons") );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // lists
@@ -128,7 +140,7 @@ namespace Oxygen
             page->setHeader( tr("Shows the appearance of lists, trees and tables") );
             pageWidget->addPage( page );
             _widgets.append( widget );
-
+            pageWidget->setCurrentPage(page);
         }
 
         // frames
@@ -139,6 +151,7 @@ namespace Oxygen
             page->setHeader( tr("Shows the appearance of various framed widgets") );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // mdi
@@ -149,6 +162,7 @@ namespace Oxygen
             page->setHeader( tr( "Shows the appearance of MDI windows" ) );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // sliders
@@ -159,6 +173,7 @@ namespace Oxygen
             page->setHeader( tr("Shows the appearance of sliders, progress bars and scrollbars") );
             pageWidget->addPage( page );
             _widgets.append( widget );
+            pageWidget->setCurrentPage(page);
         }
 
         // benchmark
@@ -172,7 +187,9 @@ namespace Oxygen
 
             pageWidget->addPage( page );
             _widgets.append( benchmarkWidget );
+            pageWidget->setCurrentPage(page);
         }
+        pageWidget->setCurrentPage(first);
 
         // connections
         QShortcut* shortcut( new QShortcut( Qt::CTRL + Qt::Key_X, this ) );
@@ -226,6 +243,26 @@ namespace Oxygen
     //_______________________________________________________________
     void DemoDialog::layoutDirectionChanged( Qt::LayoutDirection direction )
     { _rightToLeftCheckBox->setChecked( direction == Qt::RightToLeft ); }
+
+    //_______________________________________________________________
+    void DemoDialog::toggleFlat( bool value )
+    {
+        for (auto w : pageWidget->findChildren<QLineEdit*>() ) {
+            w->setFrame(!value);
+        }
+        for (auto w : pageWidget->findChildren<QComboBox*>() ) {
+            w->setFrame(!value);
+        }
+        for (auto w : pageWidget->findChildren<QSpinBox*>() ) {
+            w->setFrame(!value);
+        }
+        for (auto w : pageWidget->findChildren<QPushButton*>() ) {
+            w->setFlat(value);
+        }
+        for (auto w : pageWidget->findChildren<QToolButton*>() ) {
+            w->setAutoRaise(value);
+        }
+    }
 
     //_______________________________________________________________
     void DemoDialog::closeEvent( QCloseEvent* event )

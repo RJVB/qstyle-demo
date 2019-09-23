@@ -25,6 +25,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 #include "oxygenbuttondemowidget.h"
+#include "oxygendemodialog.h"
 
 #include <QMenu>
 #include <QIcon>
@@ -33,8 +34,8 @@ namespace Oxygen
 {
 
     //_____________________________________________________________
-    ButtonDemoWidget::ButtonDemoWidget( QWidget* parent ):
-        DemoWidget( parent )
+    ButtonDemoWidget::ButtonDemoWidget( QWidget* parent, DemoDialog *dlg ):
+        DemoWidget( parent, dlg )
     {
 
         ui.setupUi( this );
@@ -138,8 +139,15 @@ namespace Oxygen
         if( true )
         {
             // toggle flat mode and redo
-            simulator().click( ui.flatButtonCheckBox );
-            simulator().click( ui.flatButtonCheckBox );
+            if (ui.flatButtonCheckBox->isEnabled()) {
+                simulator().click( ui.flatButtonCheckBox );
+                simulator().wait(2000);
+                simulator().click( ui.flatButtonCheckBox );
+            } else if (dialog()) {
+                simulator().click( dialog()->_flatLook );
+                simulator().wait(2000);
+                simulator().click( dialog()->_flatLook );
+            }
         }
 
         if( true )

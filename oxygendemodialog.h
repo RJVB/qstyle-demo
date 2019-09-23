@@ -44,6 +44,7 @@ namespace Oxygen
     class MdiDemoWidget;
     class SliderDemoWidget;
     class TabDemoWidget;
+
     class DemoDialog: public QDialog, Ui::OxygenDemoDialog
     {
         Q_OBJECT
@@ -77,6 +78,9 @@ namespace Oxygen
         virtual void toggleRightToLeft( bool );
         virtual void layoutDirectionChanged( Qt::LayoutDirection );
 
+        //! toggle flat look
+        virtual void toggleFlat( bool );
+
         protected:
 
         //! close event
@@ -93,11 +97,19 @@ namespace Oxygen
         //! list of demo widget
         QList<DemoWidget*> _widgets;
 
+        friend class InputDemoWidget;
+        friend class ButtonDemoWidget;
+
+        protected:
+
         //! enable state checkbox
         QCheckBox* _enableCheckBox;
 
         //! reverse layout checkbox
         QCheckBox* _rightToLeftCheckBox;
+
+        //! flat look checkbox
+        QCheckBox* _flatLook;
 
     };
 
