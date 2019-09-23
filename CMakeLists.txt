@@ -29,6 +29,20 @@ include_directories(${CMAKE_BINARY_DIR} "./")
 # include_directories("./")
 include_directories(kwidgetsaddons/src)
 
+set(kwidgetsaddons_SOURCES
+    kwidgetsaddons/src/kactionmenu.cpp
+    kwidgetsaddons/src/kpagemodel.cpp
+    kwidgetsaddons/src/kpageview.cpp
+    kwidgetsaddons/src/kpageview_p.cpp
+    kwidgetsaddons/src/kpagewidget.cpp
+    kwidgetsaddons/src/kpagewidgetmodel.cpp
+    kwidgetsaddons/src/ktitlewidget.cpp
+    kwidgetsaddons/src/ktitlewidget.h
+    kwidgetsaddons/src/loggingcategory.cpp
+)
+add_library(kwidgetsaddons STATIC ${kwidgetsaddons_SOURCES})
+target_link_libraries(kwidgetsaddons PRIVATE Qt5::Core Qt5::Gui Qt5::Widgets)
+
 set(qstyle_demo_SOURCES
     oxygenbenchmarkwidget.cpp
     oxygenbuttondemowidget.cpp
@@ -44,16 +58,6 @@ set(qstyle_demo_SOURCES
     oxygentabwidget.cpp
     oxygenstylechooser.cpp
     main.cpp
-
-    kwidgetsaddons/src/kactionmenu.cpp
-    kwidgetsaddons/src/ktitlewidget.cpp
-    kwidgetsaddons/src/ktitlewidget.h
-    kwidgetsaddons/src/kpagemodel.cpp
-    kwidgetsaddons/src/kpagewidget.cpp
-    kwidgetsaddons/src/kpagewidgetmodel.cpp
-    kwidgetsaddons/src/kpageview.cpp
-    kwidgetsaddons/src/kpageview_p.cpp
-    kwidgetsaddons/src/loggingcategory.cpp
 )
 
 set(qstyle_demo_FORMS
@@ -77,7 +81,7 @@ add_executable(qstyle-demo WIN32 MACOSX_BUNDLE
   ${qstyle_demo_SOURCES}
 )
 
-target_link_libraries(qstyle-demo Qt5::Core Qt5::Gui Qt5::Widgets)
+target_link_libraries(qstyle-demo kwidgetsaddons Qt5::Core Qt5::Gui Qt5::Widgets)
 
 ########### install files ###############
 if(APPLE)
