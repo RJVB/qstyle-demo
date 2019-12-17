@@ -28,6 +28,8 @@
 
 #include <QIcon>
 #include <QAbstractItemView>
+#include <QElapsedTimer>
+#include <QMessageBox>
 
 namespace Oxygen
 {
@@ -42,6 +44,8 @@ namespace Oxygen
         ui.runButton->setIcon( QIcon::fromTheme( QStringLiteral( "system-run" ) ) );
         ui.grabMouseCheckBox->setChecked( Simulator::grabMouse() );
         connect( ui.grabMouseCheckBox, SIGNAL(toggled(bool)), SLOT(updateGrabMouse(bool)) );
+        ui.asyncCheckBox->setChecked( Simulator::aSync() );
+        connect( ui.asyncCheckBox, &QCheckBox::toggled, [&](bool value) { Simulator::setASync(value); } );
         connect( ui.runButton, SIGNAL(clicked()), SLOT(run()) );
 
     }
@@ -110,6 +114,7 @@ namespace Oxygen
     //_______________________________________________
     void BenchmarkWidget::run( void )
     {
+        QElapsedTimer timer;
 
         // check pagewidget
         if( !_pageWidget ) return;
@@ -117,6 +122,9 @@ namespace Oxygen
         // disable button and groupbox
         ui.runButton->setEnabled( false );
         Simulator::setGrabMouse( ui.grabMouseCheckBox->isChecked() );
+        Simulator::setASync( ui.asyncCheckBox->isChecked() );
+
+        timer.start();
         for( int i=0; i < _widgets.size(); ++i )
         {
 
@@ -134,6 +142,10 @@ namespace Oxygen
 
         // re-select last page
         selectPage( _widgets.size() );
+
+        const auto duration = timer.elapsed() / 1000.0;
+        QMessageBox::information(this, QStringLiteral("Result"),
+                                 QStringLiteral("The simulation took %1 seconds").arg(duration));
 
         // disable button and groupbox
         ui.runButton->setEnabled( true );

@@ -108,7 +108,7 @@ namespace Oxygen
         //! run stored events
         void run( void );
 
-        //! gab mouse
+        //! grab mouse
         static bool grabMouse( void )
         { return _grabMouse; }
 
@@ -119,6 +119,13 @@ namespace Oxygen
         //! default delay
         static void setDefaultDelay( int value )
         { _defaultDelay = value; }
+
+        static bool aSync( void )
+        { return _async; }
+
+        //! mouse grab
+        static void setASync( bool value )
+        { _async = value; }
 
         Q_SIGNALS:
 
@@ -259,6 +266,9 @@ namespace Oxygen
 
         //! default delay
         static int _defaultDelay;
+
+        //! true if the simulation must run at max speed
+        static bool _async;
 
     };
 

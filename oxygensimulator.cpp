@@ -63,6 +63,7 @@ namespace Oxygen
     //_______________________________________________________________________
     bool Simulator::_grabMouse = true;
     int Simulator::_defaultDelay = 250;
+    bool Simulator::_async = false;
 
     //_______________________________________________________________________
     Simulator::~Simulator( void )
@@ -780,6 +781,11 @@ namespace Oxygen
     //_______________________________________________________________________
     void Simulator::postDelay( int delay )
     {
+
+        if (_async) {
+            QCoreApplication::processEvents(QEventLoop::AllEvents);
+            return;
+        }
 
         // check value
         if( delay == -1 ) delay = _defaultDelay;
